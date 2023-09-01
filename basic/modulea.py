@@ -1,27 +1,42 @@
-#当导入一个模块的时候，相当于将模块直接执行了一遍
-#定义模块级变量，和函数或者类同级
-source = "模块级变量"
-def test_01():
-    global  source #使用global才能使用模块级的变量，不加就代表新声明了一个变量
-    source = "change"
-    print("这个函数没有返回值和参数")
-#有参无返回
-def test_02(a,b):
-    result = a+b
-    print(f"{result}")
+# import moduleb
+# moduleb.test()
 
-#有参有返回
-def test_03(a,b):
+# 定义模块级变量（直接隶属于当前模块，与函数或类同级，可以被其他函数直接引用）
+source = "模块级变量"
+list = [11,22,33,44,55]
+
+def test_01():
+    print("这是一个没有参数没有返回值的函数")
+    global source   # 使用global声明为全局变量后，才可以正确引用到模块级的全局变量
+    source = "Hello Module - Variable"
+    # global list
+    # list = [1,2,3]
+    list.append(66)
+
+
+def test_02(a, b):
     result = a+b
-    return  result
+    print(result)
+
+def test_03(a, b):
+    result = a+b
+    return result
 
 def test_04(func):
     print(func.__name__)
 
+# test_01()
 
-print(__name__) #在当前模块打印__name__魔术变量时，值为__main__
-#为了防止别的模块在导入模块时，重复执行以下代码
-#其本质是判断下面代码是在当前模块执行，还是在其他文件被调用执行，其他文件import 模块时，会执行一遍import的文件。
-if __name__=='__main__':
+# 当在当前模块中打印__name__魔术变量时，其值为 __main__ (字符串）
+# 如果在其他模块中引用当前模块，则打印的__name__为当前模块的真实模块名称，而非 __main__
+# print(__name__)
+
+# 为了防止别的模块在导入时重复执行以下代码，必须添加一个判断条件：
+# 其本质就是判断当前代码是否在当前模块中直接运行，还是在其他模块中被导入时运行的
+if __name__ == '__main__':
     test_01()
     test_04(test_02)
+
+
+class A:
+    pass

@@ -1,0 +1,7 @@
+username,password,expect
+lm,lmlm123,login-pass
+dy,123123,login-pass
+wangwu,ww123,login-pass
+admin,admin123,login-pass
+lc,lclc4567,login-fail
+test,test123,login-fail
