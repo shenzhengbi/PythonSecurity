@@ -124,7 +124,8 @@ def change_password(username, newpass):
 
 # 针对数据库连接进行封装操作
 def query_mysql(sql):
-    conn = pymysql.connect(host='localhost', user='root', password='123456', database='learn', charset='utf8')
+    #conn = pymysql.connect(host='localhost', user='root', password='123456', database='learn', charset='utf8')
+    conn = pymysql.connect(host='192.168.72.136',user='root',password='0908',database='woniusales',charset='utf8')
     cursor = conn.cursor(DictCursor)
     cursor.execute(sql)
     result =cursor.fetchall()
@@ -132,7 +133,8 @@ def query_mysql(sql):
     return result
 
 def update_mysql(sql):
-    conn = pymysql.connect(host='localhost', user='root', password='123456', database='learn', charset='utf8')
+    #conn = pymysql.connect(host='localhost', user='root', password='123456', database='learn', charset='utf8')
+    conn = pymysql.connect(host='192.168.72.136',user='root',password='0908',database='woniusales',charset='utf8')
     cursor = conn.cursor(DictCursor)
     cursor.execute(sql)
     conn.commit()
