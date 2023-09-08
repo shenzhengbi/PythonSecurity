@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>蜗牛笔记-全功能博客系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,
+          shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/bootstrap.css" type="text/css"/>
+    <!-- 将CSS样式表写入到专门的文件中，在此处引入即可 -->
+    <link rel="stylesheet" href="/css/woniunote.css" type="text/css"/>
+    <link href="/icon/font/css/open-iconic-bootstrap.css" rel="stylesheet">
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/js/woniunote.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/js/bootbox.min.js"></script>
+</head>
+<body>
+<!-- 首页顶部Logo和Slogan区域 -->
+<div class="navbar-default header">
+    <div class="container" style="padding: 0px 10px 0px 0px;">
+        <div class="row">
+            <div class="col-sm-4 col-4" style="margin: 10px 0px;">
+                <a href="/">
+                    <img src="/img/logo.png" style="width: 230px;" id="logo">
+                </a>
+            </div>
+            <!-- 仅在sm及以上设备中显示 -->
+            <div class="col-sm-8 col-8 d-none d-sm-block"
+                 style="text-align: right; padding-top: 20px;">
+                <h2 style="color: midnightblue">以蜗牛之名, 行学习之实</h2>
+            </div>
+            <!-- 仅在移动端显示 -->
+            <div class="col-sm-8 col-8 d-sm-none"
+                 style="text-align: right; padding-top: 20px;">
+                <h3 style="color: midnightblue">技术博客</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 设置一个最外层DIV，保持100%的宽度拉通，设置导航栏 -->
+<div class="my-menu">
+    <div class="container" style="padding: 0px;">
+        <!-- 基于BootStrap定制导航栏，可以参数bootcss.com中文网站的教程 -->
+        <nav class="navbar navbar-expand-lg navbar-dark menu-bar">
+            <a class="navbar-brand" href="#">快捷导航</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <!-- 配置折叠按钮，在移动端点击即可显示导航菜单，所有类和ID属性请勿修改 -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- 配置导航菜单项列表 -->
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <!-- 直接读取配置文件来构建分类导航菜单 -->
+                                            <a class="nav-item nav-link" href="/type/1-1">PHP开发</a>
+                                            <a class="nav-item nav-link" href="/type/2-1">Java开发</a>
+                                            <a class="nav-item nav-link" href="/type/3-1">Python开发</a>
+                                            <a class="nav-item nav-link" href="/type/4-1">Web前端</a>
+                                            <a class="nav-item nav-link" href="/type/5-1">测试开发</a>
+                                            <a class="nav-item nav-link" href="/type/6-1">数据科学</a>
+                                            <a class="nav-item nav-link" href="/type/7-1">网络安全</a>
+                                            <a class="nav-item nav-link" href="/type/8-1">蜗牛杂谈</a>
+                                    </div>
+                <!-- 使用Ajax动态渲染登录前后的菜单项，让静态页面动态化 -->
+                <div class="navbar-nav ml-auto" id="loginmenu"></div>
+                <!-- 编写Ajax代码，直接从/user/info接口拿数据来渲染 -->
+                <script type="text/javascript">
+                $(document).ready(function () {
+                    $.get('/user/info', function (data) {
+                        content = '';
+                        if (data == null) {
+                            content += '<a class="nav-item nav-link" href="#" onclick="showLogin()">登录</a>';
+                            content += '<a class="nav-item nav-link" href="#" onclick="showReg()">注册</a>';
+                        }
+                        else {
+                            content += '<a class="nav-item nav-link" href="/ucenter">欢迎你：' + data["nickname"] + '</a>&nbsp;&nbsp;&nbsp;';
+                            if (data['role'] == 'admin') {
+                                content += '<a class="nav-item nav-link" href="/system"> 系统管理</a>&nbsp;&nbsp;&nbsp;';
+                            }
+                            else {
+                                content += '<a class="nav-item nav-link" href="/ucenter"> 用户中心</a>&nbsp;&nbsp;&nbsp;';
+                            }
+                            content += '<a class="nav-item nav-link" href="/user/logout">注销</a>';
+                        }
+                        $("#loginmenu").append(content);
+                    });
+                });
+                </script>
+
+            </div>
+        </nav>
+    </div>
+</div>
+
+<!-- 中部区域布局 -->
+<div class="container" style="margin-top: 20px;">
+    <div class="row">
+        
+<div class="col-sm-9 col-12" style="padding: 0 10px;" id="left">
+    <!-- 轮播图组件应用，除了修改图片路径外，其它内容可不修改 -->
+    <div id="carouselExampleIndicators" class="col-12 carousel slide"
+         data-ride="carousel" style="padding: 0px">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0"
+                class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/img/banner-1.jpg" class="d-block w-100" alt="Banner广告一">
+            </div>
+            <div class="carousel-item">
+                <img src="/img/banner-2.jpg" class="d-block w-100" alt="Banner广告二">
+            </div>
+            <div class="carousel-item">
+                <img src="/img/banner-3.jpg" class="d-block w-100" alt="Banner广告三">
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators"
+           role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators"
+           role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+    <!-- 文章列表，使用volist循环填充即可 -->
+        <div class="col-12 row article-list">
+        <div class="col-sm-3 col-3 thumb d-none d-sm-block">
+                                   <img src="https://woniuxyopenfile.oss-cn-beijing.aliyuncs.com/woniuxynote/thumb/603.png" class="img-fluid"/>
+                    </div>
+        <div class="col-sm-9 col-xs-12 detail">
+            <div class="title"><a href="/article/589">蜗牛出版之《Python爬虫开发实战教程》书籍详解！</a></div>
+            <div class="info">作者：强哥&nbsp;&nbsp;&nbsp;类别：蜗牛杂谈&nbsp;&nbsp;&nbsp;
+                日期：2020-09-16 11:25:15&nbsp;&nbsp;&nbsp;阅读：716 次&nbsp;&nbsp;&nbsp;消耗积分：0 分</div>
+            <div class="intro">
+                &ldquo;大数据&rdquo;时代，网站与用户的沟通本质不再是过去的单向展示，而是变成了双方的数据交换：头条、抖音会根据用户的阅读/观看时间和点赞来推荐后期展示内容；电商网站会根据用户的搜索 ...
+            </div>
+        </div>
+    </div>
+        <div class="col-12 row article-list">
+        <div class="col-sm-3 col-3 thumb d-none d-sm-block">
+                                   <img src="https://woniuxyopenfile.oss-cn-beijing.aliyuncs.com/woniuxynote/thumb/602.png" class="img-fluid"/>
+                    </div>
+        <div class="col-sm-9 col-xs-12 detail">
+            <div class="title"><a href="/article/588">核心实验：Selenium WebDriver-&gt;其他应用（一）</a></div>
+            <div class="info">作者：强哥&nbsp;&nbsp;&nbsp;类别：测试开发&nbsp;&nbsp;&nbsp;
+                日期：2020-09-16 11:19:15&nbsp;&nbsp;&nbsp;阅读：763 次&nbsp;&nbsp;&nbsp;消耗积分：0 分</div>
+            <div class="intro">
+                &amp;nbsp;实&amp;nbsp;验&amp;nbsp;简 介本节实验主要为大家讲解Selenium WebDriver的另外几个比较常用的对象，它们主要包括：文件上传的操作，下拉框的使 ...
+            </div>
+        </div>
+    </div>
+        <div class="col-12 row article-list">
+        <div class="col-sm-3 col-3 thumb d-none d-sm-block">
+                                   <img src="https://woniuxyopenfile.oss-cn-beijing.aliyuncs.com/woniuxynote/thumb/601.png" class="img-fluid"/>
+                    </div>
+        <div class="col-sm-9 col-xs-12 detail">
+            <div class="title"><a href="/article/587">与IT培训机构签订合同时，你一定要注意这些细节，不然会被坑惨！</a></div>
+            <div class="info">作者：强哥&nbsp;&nbsp;&nbsp;类别：蜗牛杂谈&nbsp;&nbsp;&nbsp;
+                日期：2020-09-16 10:41:12&nbsp;&nbsp;&nbsp;阅读：659 次&nbsp;&nbsp;&nbsp;消耗积分：0 分</div>
+            <div class="intro">
+                现如今，随着信息技术的不断发展，越来越多的人开始转行做程序员，因为各种培训机构拔地而起，比如Java开发培训机构、软件测试培训机构、Web前端培训机构、UI设计培训培训、 ...
+            </div>
+        </div>
+    </div>
+        <div class="col-12 row article-list">
+        <div class="col-sm-3 col-3 thumb d-none d-sm-block">
+                                   <img src="https://woniuxyopenfile.oss-cn-beijing.aliyuncs.com/woniuxynote/thumb/600.png" class="img-fluid"/>
+                    </div>
+        <div class="col-sm-9 col-xs-12 detail">
+            <div class="title"><a href="/article/586">送你一份选择软件测试培训机构的最强攻略！</a></div>
+            <div class="info">作者：强哥&nbsp;&nbsp;&nbsp;类别：蜗牛杂谈&nbsp;&nbsp;&nbsp;
+                日期：2020-09-15 18:13:49&nbsp;&nbsp;&nbsp;阅读：648 次&nbsp;&nbsp;&nbsp;消耗积分：0 分</div>
+            <div class="intro">
+                软件测试培训和Java开发培训是不一样的，众多IT培训机构总是给转行者灌输一种&ldquo;测试就是点点点，傻瓜都能学会&rdquo;的观念。他们常说：1、如果基础差，就学测试吧。2、如果逻辑思 ...
+            </div>
+        </div>
+    </div>
+        <div class="col-12 row article-list">
+        <div class="col-sm-3 col-3 thumb d-none d-sm-block">
+                                   <img src="https://woniuxyopenfile.oss-cn-beijing.aliyuncs.com/woniuxynote/thumb/599.png" class="img-fluid"/>
+                    </div>
+        <div class="col-sm-9 col-xs-12 detail">
+            <div class="title"><a href="/article/585">花2万参加IT培训，到底值不值？</a></div>
+            <div class="info">作者：强哥&nbsp;&nbsp;&nbsp;类别：蜗牛杂谈&nbsp;&nbsp;&nbsp;
+                日期：2020-09-14 17:28:51&nbsp;&nbsp;&nbsp;阅读：669 次&nbsp;&nbsp;&nbsp;消耗积分：0 分</div>
+            <div class="intro">
+                这些年随着科技发展的需求，&ldquo;程序员&rdquo;这一职业无论是发展前景，还是薪资待遇都比其他行业好很多，也正因如此，越来越多的人开始通过IT培训机构涌入IT行业。&amp;nbsp;可如今的 ...
+            </div>
+        </div>
+    </div>
+        <div class="col-12 row article-list">
+        <div class="col-sm-3 col-3 thumb d-none d-sm-block">
+                                   <img src="https://woniuxyopenfile.oss-cn-beijing.aliyuncs.com/woniuxynote/thumb/598.jpg" class="img-fluid"/>
+                    </div>
+        <div class="col-sm-9 col-xs-12 detail">
+            <div class="title"><a href="/article/584">零基础选择IT培训靠谱吗，能否通过IT培训机构的学习找到工作？</a></div>
+            <div class="info">作者：强哥&nbsp;&nbsp;&nbsp;类别：蜗牛杂谈&nbsp;&nbsp;&nbsp;
+                日期：2020-09-09 15:29:24&nbsp;&nbsp;&nbsp;阅读：662 次&nbsp;&nbsp;&nbsp;消耗积分：0 分</div>
+            <div class="intro">
+                					此问题来自于知乎，也代表了大多数转行者内心最大的困惑。关于能不能找到工作，没有任何一个绝对且唯一的答案。有人在IT培训机构学完后开始送外卖、做销售；有人在IT培 ...
+            </div>
+        </div>
+    </div>
+        <div class="col-12 row article-list">
+        <div class="col-sm-3 col-3 thumb d-none d-sm-block">
+                                   <img src="https://woniuxyopenfile.oss-cn-beijing.aliyuncs.com/woniuxynote/thumb/597.png" class="img-fluid"/>
+                    </div>
+        <div class="col-sm-9 col-xs-12 detail">
+            <div class="title"><a href="/article/583">一位年轻妈妈转行Web前端，她的入职月薪9.4K！</a></div>
+            <div class="info">作者：强哥&nbsp;&nbsp;&nbsp;类别：蜗牛杂谈&nbsp;&nbsp;&nbsp;
+                日期：2020-09-09 11:28:40&nbsp;&nbsp;&nbsp;阅读：668 次&nbsp;&nbsp;&nbsp;消耗积分：0 分</div>
+            <div class="intro">
+                前两天在朋友圈，突然刷到了这样一条消息~点开一看，这个照片，这个背景，果然熟悉~年初3月9日开班，涛哥写了文章，并且那天咨询老师发给我她这张图片时，我就被惊到了，准确的说 ...
+            </div>
+        </div>
+    </div>
+        <div class="col-12 row article-list">
+        <div class="col-sm-3 col-3 thumb d-none d-sm-block">
+                                   <img src="https://woniuxyopenfile.oss-cn-beijing.aliyuncs.com/woniuxynote/thumb/596.png" class="img-fluid"/>
+                    </div>
+        <div class="col-sm-9 col-xs-12 detail">
+            <div class="title"><a href="/article/582">马特里卡特邀合作企业&ldquo;启明星辰&rdquo;技术经理来校给学员做网络安全分享！</a></div>
+            <div class="info">作者：强哥&nbsp;&nbsp;&nbsp;类别：蜗牛杂谈&nbsp;&nbsp;&nbsp;
+                日期：2020-09-09 11:23:40&nbsp;&nbsp;&nbsp;阅读：614 次&nbsp;&nbsp;&nbsp;消耗积分：0 分</div>
+            <div class="intro">
+                各位老铁，大家好~上周五，咱们马特里卡网络安全实验室负责人，特意邀请了网络安全行业中上市企业&ldquo;启明星辰&rdquo;成都技术经理陈老师，来校给在读学员做了相关分享！启明星辰信息技术集 ...
+            </div>
+        </div>
+    </div>
+        <div class="col-12 row article-list">
+        <div class="col-sm-3 col-3 thumb d-none d-sm-block">
+                                   <img src="https://woniuxyopenfile.oss-cn-beijing.aliyuncs.com/woniuxynote/thumb/595.png" class="img-fluid"/>
+                    </div>
+        <div class="col-sm-9 col-xs-12 detail">
+            <div class="title"><a href="/article/581">蜗牛出版之《JavaEE企业级框架开发实战教程》书籍详解！</a></div>
+            <div class="info">作者：强哥&nbsp;&nbsp;&nbsp;类别：蜗牛杂谈&nbsp;&nbsp;&nbsp;
+                日期：2020-09-09 11:13:22&nbsp;&nbsp;&nbsp;阅读：672 次&nbsp;&nbsp;&nbsp;消耗积分：0 分</div>
+            <div class="intro">
+                IT行业的薪资高吗？99%的人会回答：高。那么，IT行业是否可持续发展？至少有一半的人会觉得：不可以。为什么？因为受近两年的裁员风潮影响，很多人都认为：程序员是吃青春饭的 ...
+            </div>
+        </div>
+    </div>
+        <div class="col-12 row article-list">
+        <div class="col-sm-3 col-3 thumb d-none d-sm-block">
+                                   <img src="https://woniuxyopenfile.oss-cn-beijing.aliyuncs.com/woniuxynote/thumb/594.png" class="img-fluid"/>
+                    </div>
+        <div class="col-sm-9 col-xs-12 detail">
+            <div class="title"><a href="/article/580">核心实验：Selenium WebDriver-&gt;鼠标与键盘操作</a></div>
+            <div class="info">作者：强哥&nbsp;&nbsp;&nbsp;类别：测试开发&nbsp;&nbsp;&nbsp;
+                日期：2020-09-09 10:55:03&nbsp;&nbsp;&nbsp;阅读：922 次&nbsp;&nbsp;&nbsp;消耗积分：0 分</div>
+            <div class="intro">
+                &amp;nbsp;实&amp;nbsp;验&amp;nbsp;简 介到目前为止，我们的实验均进行的是常规的操作，比如鼠标的单击操作，或者通过SendKeys输入一段文本。但是在一个Web页面中 ...
+            </div>
+        </div>
+    </div>
+    
+    <!-- 分页导航栏 -->
+    <div class="col-12 paginate">
+        <!-- 如果是第1页，则上一页也是第1页，否则上一页为当前页-1 -->
+                <a href="/page/2">上一页</a>&nbsp;&nbsp;
+        
+        <!-- 根据总页数循环填充页码，并为其添加超链接进行导航 -->
+                <a href="/page/1">1</a>&nbsp;&nbsp;
+                <a href="/page/2">2</a>&nbsp;&nbsp;
+                <a href="/page/3">3</a>&nbsp;&nbsp;
+                <a href="/page/4">4</a>&nbsp;&nbsp;
+                <a href="/page/5">5</a>&nbsp;&nbsp;
+                <a href="/page/6">6</a>&nbsp;&nbsp;
+                <a href="/page/7">7</a>&nbsp;&nbsp;
+                <a href="/page/8">8</a>&nbsp;&nbsp;
+                <a href="/page/9">9</a>&nbsp;&nbsp;
+                <a href="/page/10">10</a>&nbsp;&nbsp;
+                <a href="/page/11">11</a>&nbsp;&nbsp;
+                <a href="/page/12">12</a>&nbsp;&nbsp;
+                <a href="/page/13">13</a>&nbsp;&nbsp;
+                <a href="/page/14">14</a>&nbsp;&nbsp;
+                <a href="/page/15">15</a>&nbsp;&nbsp;
+                <a href="/page/16">16</a>&nbsp;&nbsp;
+                <a href="/page/17">17</a>&nbsp;&nbsp;
+                <a href="/page/18">18</a>&nbsp;&nbsp;
+                <a href="/page/19">19</a>&nbsp;&nbsp;
+                <a href="/page/20">20</a>&nbsp;&nbsp;
+                <a href="/page/21">21</a>&nbsp;&nbsp;
+                <a href="/page/22">22</a>&nbsp;&nbsp;
+                <a href="/page/23">23</a>&nbsp;&nbsp;
+                <a href="/page/24">24</a>&nbsp;&nbsp;
+                <a href="/page/25">25</a>&nbsp;&nbsp;
+                <a href="/page/26">26</a>&nbsp;&nbsp;
+                <a href="/page/27">27</a>&nbsp;&nbsp;
+                <a href="/page/28">28</a>&nbsp;&nbsp;
+                <a href="/page/29">29</a>&nbsp;&nbsp;
+                <a href="/page/30">30</a>&nbsp;&nbsp;
+                <a href="/page/31">31</a>&nbsp;&nbsp;
+                <a href="/page/32">32</a>&nbsp;&nbsp;
+                <a href="/page/33">33</a>&nbsp;&nbsp;
+                <a href="/page/34">34</a>&nbsp;&nbsp;
+                <a href="/page/35">35</a>&nbsp;&nbsp;
+                <a href="/page/36">36</a>&nbsp;&nbsp;
+                <a href="/page/37">37</a>&nbsp;&nbsp;
+                <a href="/page/38">38</a>&nbsp;&nbsp;
+                <a href="/page/39">39</a>&nbsp;&nbsp;
+                <a href="/page/40">40</a>&nbsp;&nbsp;
+                <a href="/page/41">41</a>&nbsp;&nbsp;
+                <a href="/page/42">42</a>&nbsp;&nbsp;
+                <a href="/page/43">43</a>&nbsp;&nbsp;
+                <a href="/page/44">44</a>&nbsp;&nbsp;
+                <a href="/page/45">45</a>&nbsp;&nbsp;
+                <a href="/page/46">46</a>&nbsp;&nbsp;
+                <a href="/page/47">47</a>&nbsp;&nbsp;
+                <a href="/page/48">48</a>&nbsp;&nbsp;
+                <a href="/page/49">49</a>&nbsp;&nbsp;
+                <a href="/page/50">50</a>&nbsp;&nbsp;
+                <a href="/page/51">51</a>&nbsp;&nbsp;
+                <a href="/page/52">52</a>&nbsp;&nbsp;
+                <a href="/page/53">53</a>&nbsp;&nbsp;
+                <a href="/page/54">54</a>&nbsp;&nbsp;
+                <a href="/page/55">55</a>&nbsp;&nbsp;
+                <a href="/page/56">56</a>&nbsp;&nbsp;
+                <a href="/page/57">57</a>&nbsp;&nbsp;
+                <a href="/page/58">58</a>&nbsp;&nbsp;
+                <a href="/page/59">59</a>&nbsp;&nbsp;
+                <a href="/page/60">60</a>&nbsp;&nbsp;
+                <a href="/page/61">61</a>&nbsp;&nbsp;
+        
+        <!-- 如果是最后一页，则下一页也是最后页，否则下一页为当前页+1 -->
+                <a href="/page/4">下一页</a>
+            </div>
+</div>
+
+<!-- 在此处直接将side.html包含进来,如果不需要使用侧边栏的页面,则不包含即可 -->
+<!-- 侧栏文章推荐 -->
+<div class="col-sm-3 col-12" style="padding: 0px 10px;">
+    <div class="col-12 search-bar form-group row">
+        <div class="col-8">
+            <input type="text" class="form-control" id="keyword" placeholder="请输入关键字" onkeyup="doSearch(event)"/>
+        </div>
+        <div class="col-4" style="text-align:right;">
+            <button type="button" class="btn btn-primary" onclick="doSearch(null)">搜索</button>
+        </div>
+    </div>
+
+    <!-- 利用前端JS进行渲染 -->
+    <div class="col-12 side">
+        <div class="tip">最新文章</div>
+        <ul id="last"></ul>
+    </div>
+
+    <div class="col-12 side">
+        <div class="tip">最多阅读</div>
+        <ul id="most"></ul>
+    </div>
+
+    <div class="col-12 side" id="fixedmenu">
+        <div class="tip">特别推荐</div>
+        <ul id="recommended"></ul>
+        <div class="tip" style="background-color: #3276b1; text-align: center; cursor: pointer;" onclick="gotoTop()">回到顶部</div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    function doSearch(e) {
+        // 如果参数e有值，但是对应的键盘码不是13（13表示回车），则不做响应
+        if (e != null && e.keyCode != 13) {
+            return false;
+        }
+        // 利用jQuery的ID选择器取搜索框的值，为去除前后空格
+        var keyword = $.trim($("#keyword").val());
+        // 如果关键字为空，或长度大于10，或包含%，则表示无效，代码结束运行
+        if (keyword.length == 0 || keyword.length > 10 || keyword.indexOf("%") >= 0) {
+            bootbox.alert({title:'错误提示', message:'你输入的关键字不合法.'});
+            $("#keyword").focus();     // 让文本框获取到焦点，方便用户输入
+            return false;
+        }
+        // 如果keyword满足条件，则直接将页面跳转至/search/1-<keyword>地址
+        location.href = '/search/1-' + keyword;
+    }
+
+    // 页面加载完成后即运行，用于前端动态填充侧边栏数据
+    $(document).ready(function(){
+        $.get('/recommend', function(data){
+            // 分别取得JSON数据中的三个类别的数据
+            var lastData = data[0];
+            var mostData = data[1];
+            var recommendedData = data[2];
+
+            for (var i in lastData) {
+                var articleid = lastData[i]['articleid'];
+                var headline = truncate(lastData[i]['headline'], 14);
+                var id = parseInt(i) + 1;
+                // 通过元素的append方法为其添加内容，为<ul>添加<li>列表项
+                $("#last").append('<li><a href="/article/' + articleid + '">' + id + '.&nbsp;&nbsp;' + headline + '</a></li>');
+            }
+
+            for (var i in mostData) {
+                var articleid = mostData[i]['articleid'];
+                var headline = truncate(mostData[i]['headline'], 14);
+                var id = parseInt(i) + 1;
+                // 通过元素的append方法为其添加内容，为<ul>添加<li>列表项
+                $("#most").append('<li><a href="/article/' + articleid + '">' + id + '.&nbsp;&nbsp;' + headline + '</a></li>');
+            }
+
+            for (var i in recommendedData) {
+                var articleid = recommendedData[i]['articleid'];
+                var headline = truncate(recommendedData[i]['headline'], 14);
+                var id = parseInt(i) + 1;
+                // 通过元素的append方法为其添加内容，为<ul>添加<li>列表项
+                $("#recommended").append('<li><a href="/article/' + articleid + '">' + id + '.&nbsp;&nbsp;' + headline + '</a></li>');
+            }
+        });
+    });
+
+    $(document).ready(function(){
+        // 利用浏览器的user-agent属性判断浏览器类型
+        var userAgentInfo = navigator.userAgent.toLowerCase();
+        var agents = ["android", "iphone", "symbianOS", "windows phone", "ipad", "ipod"];
+        var flag = true;    // 表示是PC端
+        for (var v = 0; v < agents.length; v++) {
+            if (userAgentInfo.indexOf(agents[v]) >= 0) {
+                flag = false;   // 表示这是移动端
+                break;
+            }
+        }
+
+        // 是PC端时才进行右侧停靠
+        if (flag == true) {
+            var fixedDiv = document.getElementById("fixedmenu");
+            var H = 0;
+            var Y = fixedDiv;
+            while (Y) {
+                H += Y.offsetTop;
+                Y = Y.offsetParent;
+            }
+
+            window.onscroll = function () {
+                var s = document.body.scrollTop || document.documentElement.scrollTop;
+                if (s > H + 500) {
+                    fixedDiv.style = "position:fixed; top:0; margin-top:0; width: 306px;";
+                } else {
+                    fixedDiv.style = "";
+                }
+            }
+        }
+    });
+
+    function gotoTop() {
+        $('html, body').animate({scrollTop: 0}, 800);
+        return false;
+    }
+</script>
+
+
+
+    </div>
+</div>
+
+<!-- 底部设计 -->
+<div class="container-fluid footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-4 left">
+                <p>版权所有 &copy; 蜗牛笔记 (V-1.0)</p>
+                <p>备案号：<a href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备15014130号-1</a></p>
+            </div>
+            <div class="col-4 center">
+                <p>友情链接</p>
+                <p><a href="http://www.woniuxy.com/" target="_blank">在线课堂</a>&nbsp;&nbsp;&nbsp;
+                    <a href="http://www.woniuxy.com/live" target="_blank">直播课堂</a>&nbsp;&nbsp;&nbsp;
+                    <a href="http://www.woniuxy.com/train/index.html" target="_blank">培训中心</a>&nbsp;&nbsp;&nbsp;
+                    <a href="http://www.aduobi.com" target="_blank">UI设计学院</a>
+                </p>
+            </div>
+            <div class="col-4 right">
+                <p>联系我们</p>
+                <p>成都★孵化园&nbsp;&nbsp;&nbsp;QQ/微信：15903523</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 登录和注册模态框 -->
+<!-- data-backdrop="static" 表示用户必须要手工关闭模态框才能操作其他页面 -->
+<div class="modal fade" id="mymodal" data-backdrop="static" tabindex="-1"
+     role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- 在模态框内部配置Tab选项卡，用于切换登录和注册窗口 -->
+            <div class="tabbable" id="tabs"
+                 style="background-color: #337AB7; height: 50px;padding: 5px 20px;">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <!-- 与登录和注册窗口的ID进行关联 -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li id="login" class="nav-item active">
+                        <a href="#loginpanel" data-toggle="tab" class="nav-link" style="color: midnightblue">登录</a>
+                    </li>
+                    <li id="reg" class="nav-item">
+                        <a href="#regpanel" data-toggle="tab" class="nav-link" style="color: midnightblue">注册</a>
+                    </li>
+                    <li id="find" class="nav-item">
+                        <a href="#findpanel" data-toggle="tab" class="nav-link" style="color: midnightblue">找回密码</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 绘制登录窗口 -->
+            <div class="tab-content">
+                <div class="tab-pane container active" id="loginpanel">
+                    <div class="modal-content" style="margin: 20px 0px;">
+                        <div class="modal-body">
+                            <div class="form-group row" style="margin-top: 20px;">
+                                <label for="loginname" class="col-4">&nbsp;&nbsp;登录邮箱：</label>
+                                <input type="text" id="loginname" class="form-control col-7" placeholder="请输入你的邮箱地址"/>
+                            </div>
+                            <div class="form-group row">
+                                <label for="loginpass" class="col-4">&nbsp;&nbsp;登录密码：</label>
+                                <input type="password" id="loginpass" class="form-control col-7" placeholder="请输入你的登录密码"/>
+                            </div>
+                            <div class="form-group row">
+                                <label for="logincode" class="col-4"> &nbsp;&nbsp;图片验证码：</label>
+                                <input type="text" id="logincode" class="form-control col-5" placeholder="请输入右侧的验证码" onkeyup="doLogin(event)"/>
+                                <img src="/captcha.html" id="loginvcode" class="col-3" style="cursor:pointer;" onclick="this.src='/captcha.html?'+Math.random()"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-dark" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" onclick="doLogin(null)">登录</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 绘制注册窗口 -->
+                <div class="tab-pane container" id="regpanel">
+                    <div class="modal-content">
+                        <div class="modal-content" style="margin: 20px 0px;">
+                            <div class="modal-body">
+                                <div class="form-group row" style="margin-top: 20px;">
+                                    <label for="regname" class="col-4">&nbsp;&nbsp;注册邮箱：</label>
+                                    <input type="text" id="regname" class="form-control col-7" placeholder="请输入你的邮箱地址"/>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="regpass" class="col-4">&nbsp;&nbsp;注册密码：</label>
+                                    <input type="password" id="regpass" class="form-control col-7" placeholder="请输入你的注册密码"/>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="regcode" class="col-4">&nbsp;&nbsp;邮箱验证码：</label>
+                                    <input type="text" id="regcode" class="form-control col-4" placeholder="请输入邮箱验证码" onkeyup="doReg(event)"/>
+                                    <button type="button" class="btn btn-primary col-3" onclick="doSendMail(this)">发送邮件</button>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <span>注册时请使用邮箱地址，便于找回密码。&nbsp;&nbsp;</span>
+                                <button type="button" class="btn btn-dark" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary" onclick="doReg(null)">注册</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 绘制找回密码窗口 -->
+                <div class="tab-pane container" id="findpanel">
+                    <div class="modal-content">
+                        <div class="modal-content" style="margin: 20px 0px;">
+                            <div class="modal-body">
+                                <div class="form-group row" style="margin-top: 20px;">
+                                    <label for="username" class="col-4">&nbsp;&nbsp;注册邮箱：</label>
+                                    <input type="text" id="username" class="form-control col-7" placeholder="请输入你的邮箱地址"/>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="newpass" class="col-4">&nbsp;&nbsp;新的密码：</label>
+                                    <input type="text" id="newpass" class="form-control col-7" placeholder="请输入新的登录密码"/>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="findcode" class="col-4">&nbsp;&nbsp;邮箱验证码：</label>
+                                    <input type="text" id="findcode" class="form-control col-4" placeholder="请输入邮箱验证码" onkeyup="doReset(event)"/>
+                                    <button type="button" class="btn btn-primary col-3" onclick="doSendMail(this)">发送邮件</button>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <span>请输入注册邮箱地址并重置密码。&nbsp;&nbsp;</span>
+                                <button type="button" class="btn btn-dark" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary" onclick="doReset(null)">重置密码</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>蜗牛笔记-全功能博客系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,
+          shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/bootstrap.css" type="text/css"/>
+    <!-- 将CSS样式表写入到专门的文件中，在此处引入即可 -->
+    <link rel="stylesheet" href="/css/woniunote.css" type="text/css"/>
+    <link href="/icon/font/css/open-iconic-bootstrap.css" rel="stylesheet">
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/js/woniunote.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/js/bootbox.min.js"></script>
+</head>
+<body>
+<!-- 首页顶部Logo和Slogan区域 -->
+<div class="navbar-default header">
+    <div class="container" style="padding: 0px 10px 0px 0px;">
+        <div class="row">
+            <div class="col-sm-4 col-4" style="margin: 10px 0px;">
+                <a href="/">
+                    <img src="/img/logo.png" style="width: 230px;" id="logo">
+                </a>
+            </div>
+            <!-- 仅在sm及以上设备中显示 -->
+            <div class="col-sm-8 col-8 d-none d-sm-block"
+                 style="text-align: right; padding-top: 20px;">
+                <h2 style="color: midnightblue">以蜗牛之名, 行学习之实</h2>
+            </div>
+            <!-- 仅在移动端显示 -->
+            <div class="col-sm-8 col-8 d-sm-none"
+                 style="text-align: right; padding-top: 20px;">
+                <h3 style="color: midnightblue">技术博客</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 设置一个最外层DIV，保持100%的宽度拉通，设置导航栏 -->
+<div class="my-menu">
+    <div class="container" style="padding: 0px;">
+        <!-- 基于BootStrap定制导航栏，可以参数bootcss.com中文网站的教程 -->
+        <nav class="navbar navbar-expand-lg navbar-dark menu-bar">
+            <a class="navbar-brand" href="#">快捷导航</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <!-- 配置折叠按钮，在移动端点击即可显示导航菜单，所有类和ID属性请勿修改 -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- 配置导航菜单项列表 -->
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <!-- 直接读取配置文件来构建分类导航菜单 -->
+                                            <a class="nav-item nav-link" href="/type/1-1">PHP开发</a>
+                                            <a class="nav-item nav-link" href="/type/2-1">Java开发</a>
+                                            <a class="nav-item nav-link" href="/type/3-1">Python开发</a>
+                                            <a class="nav-item nav-link" href="/type/4-1">Web前端</a>
+                                            <a class="nav-item nav-link" href="/type/5-1">测试开发</a>
+                                            <a class="nav-item nav-link" href="/type/6-1">数据科学</a>
+                                            <a class="nav-item nav-link" href="/type/7-1">网络安全</a>
+                                            <a class="nav-item nav-link" href="/type/8-1">蜗牛杂谈</a>
+                                    </div>
+                <!-- 使用Ajax动态渲染登录前后的菜单项，让静态页面动态化 -->
+                <div class="navbar-nav ml-auto" id="loginmenu"></div>
+                <!-- 编写Ajax代码，直接从/user/info接口拿数据来渲染 -->
+                <script type="text/javascript">
+                $(document).ready(function () {
+                    $.get('/user/info', function (data) {
+                        content = '';
+                        if (data == null) {
+                            content += '<a class="nav-item nav-link" href="#" onclick="showLogin()">登录</a>';
+                            content += '<a class="nav-item nav-link" href="#" onclick="showReg()">注册</a>';
+                        }
+                        else {
+                            content += '<a class="nav-item nav-link" href="/ucenter">欢迎你：' + data["nickname"] + '</a>&nbsp;&nbsp;&nbsp;';
+                            if (data['role'] == 'admin') {
+                                content += '<a class="nav-item nav-link" href="/system"> 系统管理</a>&nbsp;&nbsp;&nbsp;';
+                            }
+                            else {
+                                content += '<a class="nav-item nav-link" href="/ucenter"> 用户中心</a>&nbsp;&nbsp;&nbsp;';
+                            }
+                            content += '<a class="nav-item nav-link" href="/user/logout">注销</a>';
+                        }
+                        $("#loginmenu").append(content);
+                    });
+                });
+                </script>
+
+            </div>
+        </nav>
+    </div>
+</div>
+
+<!-- 中部区域布局 -->
+<div class="container" style="margin-top: 20px;">
+    <div class="row">
+        
+<!--
+<script type="text/javascript" src="/ue/ueditor.config.js"></script>
+<script type="text/javascript" src="/ue/ueditor.all.min.js"> </script>
+<script type="text/javascript" src="/ue/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">
+    var ue = UE.getEditor('comment', {
+        initialFrameHeight: 150,    // 编辑器初始高度
+        autoHeightEnabled: true,    // 根据内容自动调整高度
+        serverUrl: '/uedit',        // 指定后台接口地址
+        toolbars: [ [
+            'fontfamily', //字体
+            'fontsize', //字号
+            'paragraph', //段落格式
+            '|',
+            'justifyleft', //居左对齐
+            'justifycenter', //居中对齐
+            'justifyright', //居右对齐
+            'forecolor', //字体颜色
+            'bold', //加粗
+            '|',
+            'formatmatch', //格式刷
+            'horizontal', //分隔线
+            'link', //超链接
+            'unlink', //取消链接
+            'simpleupload', //单图上传
+            'insertimage', //多图上传
+            'emotion', //表情
+            'spechars', //特殊字符
+            '|',
+            'fullscreen', //全屏
+            'autotypeset', //自动排版
+            'removeformat', //清除格式
+            'insertcode', //代码语言
+        ] ]
+    });
+</script>
+-->
+<div class="col-sm-9 col-12" style="padding: 0 10px;" id="left">
+<div class="col-12 article-detail row">
+    <div class="col-9 title">
+        核心实验：利用UIAutomation库测试Windows应用（一）    </div>
+    <div class="col-3 favorite">
+                <label class="favorite-btn" onclick="addFavorite('607')">
+            <span class="oi oi-heart" aria-hidden="true"></span> 收藏本文
+        </label>
+            </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 info">
+        作者：强哥&nbsp;&nbsp;&nbsp;类别：测试开发&nbsp;&nbsp;&nbsp;
+        日期：2020-10-21 11:02:42&nbsp;&nbsp;&nbsp;
+        阅读：9111 次&nbsp;&nbsp;&nbsp;消耗积分：0 分
+    </div>
+    <div class="col-12 content" id="content">
+        <section><section><section><section><section><section><h1 style="font-size: 32px; font-weight: bold; border-bottom: 2px solid rgb(204, 204, 204); padding: 0px 4px 0px 0px; text-align: center; margin: 0px 0px 20px;"><span style="font-size: 24px; color: rgb(79, 129, 189);">&nbsp;<strong style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important;">实&nbsp;验&nbsp;简 介</strong></span></h1><p><br/></p></section></section></section></section></section></section><p><section><br/></section><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">前面已经学习的自动化测试框架，除SikuliX之外都只能对B/S架构的系统进行自动化 测试，而Windows平台下的C/S架构用SikuliX来做自动化，可靠性、可维护性比较差。</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"><br/></span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">项目代码中还要夹杂着大量的图片，对于整个项目来说，庞大的数据量里90%都是图片，对于编码者和使用者都会造成困扰，那么Windows平台的自动化测试框架就有了学习和使用的价值了。</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"><br/></span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">目前Windows平台下自动化工具有：Windows API, MSAA - Microsoft Active Accessibility, UIAutomation</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">Windows API 通过FindWindow和EnumWindows来查找到窗口句柄，然后再调用其它 API</span><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; color: rgb(165, 165, 165); outline: none 0px !important;">(GetWindowText，GetWindowRect, GetWindowLong…)</span><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">来获取窗口属性，以此来找到想要的控件（窗口）,AutoIt工具就是Windows API的技术体现。</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"><br/></span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">MSAA 提供一套接口，让开发人员可以方便的给残疾人开发可以使用的软件，比如读屏程序</span><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; color: rgb(165, 165, 165); outline: none 0px !important;">（鼠标移动到按钮的时候，可以发出声音，辅助视力障碍的人操作电脑）</span><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">，从而实现微软将电脑普及到每一个家庭的梦想。</span></p><section><br/></section><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">它本身设计不是为了测试，但它提供一套接口，可以通过调用接口来达到测试的目的，也是目前主流Windows平台测试的基础，通过对其再次封装实现对系统软件的调用和测试。</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"><br/></span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">UIAutomation是微软在MSAA的基础上，对MSAA进行封装，重新设计并实现了 UIAutomation的类库</span><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; color: rgb(165, 165, 165); outline: none 0px !important;">（.Net）</span><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">，微软根据自动化测试的需求，重新实现了一套自动化体系。</span></p><p style="line-height: 2em;"><br/></p><p style="line-height: 2em;"><br/></p><p style="line-height: 2em;"><br/></p><section><section><section><section><section><section><h1 style="font-size: 32px; font-weight: bold; border-bottom: 2px solid rgb(204, 204, 204); padding: 0px 4px 0px 0px; text-align: center; margin: 0px 0px 20px;"><span style="font-size: 24px; color: rgb(79, 129, 189);">&nbsp;<strong style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important;">实&nbsp;验 目 的</strong></span>&nbsp;</h1><p><br/></p></section></section></section></section></section></section></p><p style="margin: 0px 8px; padding: 0px; max-width: 100%; clear: both; min-height: 1em; font-family: -apple-system-font, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei UI&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif; text-align: justify; white-space: normal; line-height: 2em; letter-spacing: 0.54px; background-color: rgb(255, 255, 255); box-sizing: border-box !important; overflow-wrap: break-word !important;"><br/></p><p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">(1).熟练应用UIAutomation完成针对Windows应用程序的自动化测试。</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">(2).能够在实际测试项目中综合运用Web和Windows应用自动化测试技术完成复杂的测试操作。</span></p><p style="line-height: 2em;"><br/></p><p style="line-height: 2em;"><br/></p><p style="line-height: 2em;"><br/></p><section><section><section><section><section><section><h1 style="font-size: 32px; font-weight: bold; border-bottom: 2px solid rgb(204, 204, 204); padding: 0px 4px 0px 0px; text-align: center; margin: 0px 0px 20px;"><span style="font-size: 24px; color: rgb(79, 129, 189);">&nbsp;<strong style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important;">实&nbsp;验 流 程</strong>&nbsp;</span></h1><p><br/></p></section></section></section></section></section></section><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"></span><br/></p></p><ul class=" list-paddingleft-2" style="list-style-type: square;"><li><p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; max-width: 100%; clear: both; min-height: 1em; line-height: 2em; box-sizing: border-box !important; overflow-wrap: break-word !important;"><strong style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">UIAutomation运用</span></strong><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"></span></p></li></ul><p><section><br/></section><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">UIAutomation支持多种语言，这里就通过python来调用。UIAutomation是第三方库，所以首先需要安装库pip install uiautomation。先用UIAutomation操作Windows自带计算器.</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"><br/></span></p><p style="line-height: 2em;"><strong style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">1.定位窗体</span></strong><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"></span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"><br/></span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">首先启动计算器，然后启动UISpy.exe,在Control View的树形结构中，找到计算器。前面已经学习了两种方式定位，二者任选。结果如图所示。</span></p><section><br/></section></p><p style="margin: 0px 8px; padding: 0px; max-width: 100%; clear: both; min-height: 1em; color: rgb(51, 51, 51); font-family: -apple-system-font, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei UI&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif; font-size: 17px; letter-spacing: 0.544px; white-space: normal; background-color: rgb(255, 255, 255); text-align: center; line-height: 2em; box-sizing: border-box !important; overflow-wrap: break-word !important;"><img src="https://woniuxyopenfile.oss-cn-beijing.aliyuncs.com/woniuxynote/image/202010/20201021_110126_316.png" title="20201021_110126_316.png" alt="20201021_110126_316.png" width="707" height="276"/></p><p><section><br/></section><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">可以看出，在UISpy中选择计算器后，计算器就会多一个红色的框，用于提示用户，当前定位的元素指向程序哪个部分。</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"><br/></span></p><p style="line-height: 2em;"><strong style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">2.定位元素</span></strong><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"></span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"><br/></span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">在UISpy中找到程序后，可以在其下的树形结构中找到每一个元素。比如按钮“7”，找到后，可以在Properties里看到“7”的属性，同时，计算器上的“7”周围有个红色的小框，如图所示。</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"><br/></span></p><p style="line-height: 2em; text-align: center;"><img src="https://woniuxyopenfile.oss-cn-beijing.aliyuncs.com/woniuxynote/image/202010/20201021_110148_320.png" title="20201021_110148_320.png" alt="20201021_110148_320.png" width="707" height="437"/></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"></span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">对于按钮“7”重要的属性已经显示在Properties中，ClassName：‘Button’,AutomationId:</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">‘137’,Name:’7’等，都是后面代码可能会用到的</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"><br/></span></p><p style="line-height: 2em;"><strong style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">3.编码实现</span></strong><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"></span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"><br/></span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">通过UISpy对需要的窗体的元素定位获取属性后，可以通过python代码实现程序自动化。代码如下：</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"><br/></span></p></p><table width="677"><tbody style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; outline: none 0px !important;"><tr style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; outline: none 0px !important;" class="firstRow"><td valign="top" width="614" style="margin: 0px; padding: 0px 7px; overflow-wrap: break-word; word-break: break-all; border-color: rgb(0, 0, 0); max-width: 100%; max-inline-size: 100%; cursor: text; background: rgb(238, 236, 225); box-sizing: border-box !important; outline: none 0px !important;"><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">import subprocess</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">import uiautomation</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">import time</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">#打开计算器程序</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">subprocess.Popen(&#39;calc.exe&#39;)</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">time.sleep(2)</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">#通过UIAutomation定位窗体</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">calcwindow = uiautomation.WindowControl(searchDepth=1, Name=&#39;计算器&#39;)</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">#在最上层显示</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">calcwindow.SetTopmost(True)</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">#点击数字“7”</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">calcwindow.ButtonControl(Name=&#39;7&#39;).Click()</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">#点击加号</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">calcwindow.ButtonControl(Name=&#39;加&#39;).Click()</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">#点击数字“5”</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">calcwindow.ButtonControl(Name=&#39;5&#39;).Click()</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">#点击等号</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">calcwindow.ButtonControl(Name=&#39;等于&#39;).Click()</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">#获取数据显示框的内容</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">result = calcwindow.TextControl(AutomationId=&quot;158&quot;)</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">print(result.Name)</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">#做验证</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">if result.Name.split(&#39; &#39;)[0] == &#39;12&#39;:</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">&nbsp;&nbsp;&nbsp;&nbsp;print(&quot;测试成功.&quot;)</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">else:</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">&nbsp;&nbsp;&nbsp;&nbsp;print(&quot;测试失败.&quot;)</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">time.sleep(2)</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">#关闭窗体</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 14px; outline: none 0px !important;">calcwindow.Close()</span></p></td></tr></tbody></table><p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;"><br/></span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">由于本章技术内容较多，所以分</span><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; max-inline-size: 100%; cursor: text; font-family: 宋体, SimSun; font-size: 15px; outline: none 0px !important;">为三部分来分享，接下来会陆续分享</span><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; font-family: 宋体, SimSun; font-size: 15px;">UIAutomation API、</span><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; font-family: 宋体, SimSun; font-size: 15px;">UIAutomation</span><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; font-family: 宋体, SimSun; font-size: 15px;">使用中的问题等内容。</span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; font-family: 宋体, SimSun; font-size: 15px;"><br/></span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; font-family: 宋体, SimSun; font-size: 15px;"></span></p><p style="margin: 0px 8px; word-break: break-word; overflow: hidden; color: rgb(51, 51, 51); white-space: normal; padding: 0px; max-width: 100%; clear: both; min-height: 1em; font-family: -apple-system-font, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Hiragino Sans GB&quot;, &quot;Microsoft YaHei UI&quot;, &quot;Microsoft YaHei&quot;, Arial, sans-serif; font-size: 17px; letter-spacing: 0.544px; text-align: justify; background-color: rgb(255, 255, 255); line-height: 2em; box-sizing: border-box !important; overflow-wrap: break-word !important;"><span style="box-sizing: border-box; letter-spacing: 0.544px; color: rgb(98, 98, 98); font-family: 宋体; font-size: 15px;"></span></p><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 10px; word-break: break-word; overflow-wrap: break-word; overflow: hidden; color: rgb(51, 51, 51); font-family: 寰蒋闆呴粦, 骞煎渾, 瀹嬩綋, Verdana; white-space: normal; background-color: rgb(255, 255, 255);"><span style="box-sizing: border-box !important; margin: 0px; padding: 0px; max-width: 100%; font-size: 15px; font-family: 宋体; overflow-wrap: break-word !important;"><span style="box-sizing: border-box !important; margin: 0px; padding: 0px; max-width: 100%; overflow-wrap: break-word !important;"><br/></span></span></p><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 10px; word-break: break-word; overflow-wrap: break-word; overflow: hidden; color: rgb(51, 51, 51); font-family: 寰蒋闆呴粦, 骞煎渾, 瀹嬩綋, Verdana; white-space: normal; background-color: rgb(255, 255, 255);"><span style="box-sizing: border-box !important; margin: 0px; padding: 0px; max-width: 100%; font-size: 15px; font-family: 宋体; overflow-wrap: break-word !important;"><span style="box-sizing: border-box !important; margin: 0px; padding: 0px; max-width: 100%; overflow-wrap: break-word !important;"></span></span></p><hr/><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 10px; word-break: break-word; overflow-wrap: break-word; overflow: hidden; color: rgb(51, 51, 51); font-family: 寰蒋闆呴粦, 骞煎渾, 瀹嬩綋, Verdana; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.75em;"><span style="box-sizing: border-box; font-weight: 600; color: rgb(38, 38, 38); font-family: 宋体, SimSun;"></span></p><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 10px; word-break: break-word; overflow-wrap: break-word; overflow: hidden; color: rgb(51, 51, 51); font-family: 寰蒋闆呴粦, 骞煎渾, 瀹嬩綋, Verdana; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.75em;"><span style="box-sizing: border-box; font-weight: 600; color: rgb(38, 38, 38); font-family: 宋体, SimSun;"><br/></span></p><p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 10px; word-break: break-word; overflow-wrap: break-word; overflow: hidden; color: rgb(51, 51, 51); font-family: 寰蒋闆呴粦, 骞煎渾, 瀹嬩綋, Verdana; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.75em;"><span style="box-sizing: border-box; font-weight: 600; color: rgb(38, 38, 38); font-family: 宋体, SimSun;">为了答谢大家对蜗牛学院的支持，蜗牛学院将会定期对大家免费发放干货，敬请关注蜗牛学院的官方微信。</span></p><p style="margin-top: 0px; margin-bottom: 0px; word-break: break-word; overflow: hidden; color: rgb(51, 51, 51); white-space: normal; list-style-type: none; padding: 0px 0.5em; max-width: 100%; min-height: 1em; letter-spacing: 0.544px; font-family: 微软雅黑, &quot;Microsoft YaHei&quot;, Arial, sans-serif; text-align: center; background-color: rgb(255, 255, 255); line-height: 1.75em; box-sizing: border-box !important; overflow-wrap: break-word !important; outline: currentcolor none 0px !important;"><span style="box-sizing: border-box !important; margin: 0px; padding: 0px; max-width: 100%; color: rgb(101, 101, 101); font-family: 宋体, SimSun; overflow-wrap: break-word !important; outline: currentcolor none 0px !important;"><img src="https://woniuxyopenfile.oss-cn-beijing.aliyuncs.com/woniuxynote/image/201903/20190320_095757_834.jpg" title="20190320_095757_834.jpg" alt="20190320_095757_834.jpg"/></span></p><p style="line-height: 2em;"><span style="margin: 0px; padding: 0px; max-width: 100%; box-sizing: border-box !important; overflow-wrap: break-word !important; font-family: 宋体, SimSun; font-size: 15px;"><br/></span><br/></p></p>    <!-- 要保持HTML原样输出，不能转义 -->
+    </div>
+
+    <!-- 只有需要消耗积分的文章且未曾支付积分的文章才显示阅读全文按钮 -->
+    
+
+    <div class="col-12 favorite" style="margin: 30px 0px;">
+        <!-- 只有文章作者可以编辑该文章 -->
+                &nbsp;&nbsp;&nbsp;
+        <!-- 收藏和取消收藏按钮 -->
+                <label class="favorite-btn" onclick="addFavorite('607')">
+            <span class="oi oi-heart" aria-hidden="true"></span> 收藏本文
+        </label>
+            </div>
+</div>
+
+<div class="col-12 article-nav">
+    <div>版权所有，转载本站文章请注明出处：蜗牛笔记， http://www.woniunote.com/article/607</div>
+    <div>上一篇：
+        <a href="/article/606">报告：阿多比学员出关了！</a>
+    </div>
+    <div>下一篇：
+        <a href="/article/608">培训期间，从未12点之前离开过教室的他入职了，月薪15K！</a>
+    </div>
+</div>
+
+<div class="col-12 article-comment" id="commenttop">
+    <div class="col-12 row add-comment ">
+        <div class="col-sm-2 col-12">
+            <label for="nickname">你的昵称：</label>
+        </div>
+        <div class="col-sm-10 col-12" style="padding: 0 0 0 10px;">
+                        <input type="text" class="form-control" id="nickname" value="你还未登录，双击此处可登录." ondblclick="showLogin()" readonly/>
+                    </div>
+    </div>
+    <div class="col-12 row">
+        <div class="col-sm-2 col-12">
+            <label for="comment">你的评论：</label>
+        </div>
+        <div class="col-sm-10 col-12" style="padding: 0 0 0 10px;">
+            <textarea id="comment" class="form-control" placeholder="请在此留下你的真诚的、感人的、发自肺腑的赞美之词." style="height: 100px;"></textarea>
+            <!--<script id="comment" name="comment" type="text/plain"></script>-->
+        </div>
+    </div>
+    <div class="col-12 row" style="margin-bottom: 20px;">
+        <div class="col-2"></div>
+        <div class="col-sm-8 col-12" style="text-align: left; color: #888888;">提示：登录后添加有效评论可享受积分哦！</div>
+        <div class="col-sm-2 col-12" style="text-align: right">
+                        <button type="button" class="btn btn-primary" onclick="showLogin()">点此登录</button>
+                    </div>
+    </div>
+
+    <div id="commentDiv">
+    <!-- 循环遍历评论，这部分代码保持不变 -->
+        <div class="col-12 list row">
+    <div class="col-2 icon">
+        <img src="/avatar/15.png" class="img-fluid" style="width: 70px;"/>
+    </div>
+    <div class="col-10 comment">
+    <div class="col-12 row" style="padding: 0px;">
+        <div class="col-7 commenter">2454751680&nbsp;&nbsp;&nbsp;2023-07-03 10:07:55</div>
+        <div class="col-5 reply">
+            <!-- 文章作者、管理员和评论者只能回复和隐藏，不能点赞-->
+                        <label onclick="gotoReply('175')">
+                <span class="oi oi-arrow-circle-right" aria-hidden="true"></span>回复
+            </label>&nbsp;&nbsp;&nbsp;
+            <label onclick="agreeComment(this, '175')">
+                <span class="oi oi-chevron-bottom" aria-hidden="true"></span> 赞成 (<span>1</span>)
+            </label>&nbsp;&nbsp;&nbsp;
+            <label onclick="opposeComment(this, '175')">
+                <span class="oi oi-x" aria-hidden="true"></span> 反对 (<span>0</span>)
+            </label>
+                    </div>
+    </div>
+    <div class="col-12 content">
+        &lt;/div&gt;&lt;SCRIPT&gt;alert('xss')&lt;/script&gt;&lt;div&gt;    </div>
+    </div>
+    </div>
+
+    <!-- 在当前评论下方填充回复评论,如果当前评论有回复才填充，使用notempty条件判断 -->
+            <div class="col-12 list row">
+    <div class="col-2 icon">
+        <img src="/avatar/15.png" class="img-fluid" style="width: 70px;"/>
+    </div>
+    <div class="col-10 comment">
+    <div class="col-12 row" style="padding: 0px;">
+        <div class="col-7 commenter">2454751680&nbsp;&nbsp;&nbsp;2023-07-03 10:07:25</div>
+        <div class="col-5 reply">
+            <!-- 文章作者、管理员和评论者只能回复和隐藏，不能点赞-->
+                        <label onclick="gotoReply('174')">
+                <span class="oi oi-arrow-circle-right" aria-hidden="true"></span>回复
+            </label>&nbsp;&nbsp;&nbsp;
+            <label onclick="agreeComment(this, '174')">
+                <span class="oi oi-chevron-bottom" aria-hidden="true"></span> 赞成 (<span>1</span>)
+            </label>&nbsp;&nbsp;&nbsp;
+            <label onclick="opposeComment(this, '174')">
+                <span class="oi oi-x" aria-hidden="true"></span> 反对 (<span>0</span>)
+            </label>
+                    </div>
+    </div>
+    <div class="col-12 content">
+        &lt;SCRIPT&gt;alert('xss')&lt;/script&gt;    </div>
+    </div>
+    </div>
+
+    <!-- 在当前评论下方填充回复评论,如果当前评论有回复才填充，使用notempty条件判断 -->
+            </div>
+
+</div>
+    <!-- 由于使用Ajax进行分页，分页导航时不能再使用超链接 -->
+    </div>
+
+<script type="text/javascript">
+    function readAll() {
+        var param = 'articleid=607&position=0';
+        $.post('/article/readall', param , function (data) {
+            if (data == 'credit_lack') {
+                bootbox.alert({title:"错误提示", message:"你的积分余额不足."});
+                return false;
+            }
+            $("#content").append(data);
+            $(".readall").hide();   // 读取完成后隐藏阅读全文按钮
+        });
+    }
+
+    // 发送收藏文章请求
+    function addFavorite(articleid) {
+        $.post('/favorite', 'articleid=' + articleid, function (data) {
+            if (data == 'not-login') {
+                bootbox.alert({title:"错误提示", message:"你还没有登录，不能收藏文章."});
+            }
+            else if (data == 'favorite-pass') {
+                bootbox.alert({title:"信息提示", message:"文章收藏成功，可在我的收藏中查看."});
+                    // 修改当前元素的内容
+                    $(".favorite-btn").html('<span class="oi oi-heart" aria-hidden="true"></span> 感谢收藏');
+                // 解除当前元素的单击事件，使期无法进行任何单击操作
+                $(".favorite-btn").attr('onclick', '').unbind('click');
+            }
+            else if (data == 'favorite-fail') {
+                    bootbox.alert({title:"错误提示", message:"收藏文章出错，请联系管理员."});
+                }
+            });
+    }
+
+    // 由于jQuery没有封装对$.delete，所以通过$.ajax发送Delete请求
+    function cancelFavorite(articleid) {
+        $.ajax({
+            url: '/favorite/' + articleid,
+            type: 'delete',    // 发送Delete请求
+            success: function (data) {
+                if (data == 'not-login') {
+                    bootbox.alert({title:"错误提示", message:"你还没有登录，不能收藏文章."});
+                    }
+                else if (data == 'cancel-pass') {
+                    bootbox.alert({title:"信息提示", message:"取消收藏成功."});
+                    $(".favorite-btn").html('<span class="oi oi-heart aria-hidden="true"></span> 欢迎再来');
+                    $(".favorite-btn").attr('onclick', '').unbind('click');
+                }
+                else if (data == 'cancel-fail') {
+                    bootbox.alert({title:"错误提示", message:"取消收藏出错，请联系管理员."});
+                }
+            }
+        });
+    }
+
+    // 添加评论
+    function addComment(articleid) {
+        var content = $.trim($("#comment").val());
+        if (content.length < 5 || content.length > 1000) {
+            bootbox.alert({title:"错误提示", message:"评论内容在5-1000字之间."});
+            return false;
+        }
+        var param = 'articleid=' + articleid + '&content=' + content;
+        $.post('/comment', param, function (data) {
+            if (data == 'content-invalid') {
+                bootbox.alert({title:"错误提示", message:"评论内容在5-1000字之间."});
+            }
+            else if (data == 'add-limit') {
+                bootbox.alert({title:"错误提示", message:"当天已用完5条评论的限额."});
+            }
+            else if (data =='add-pass') {
+                location.reload();
+            }
+            else {
+                bootbox.alert({title:"错误提示", message:"发表评论出错，请联系管理员."});
+            }
+        });
+    }
+
+    // 定义全局变量，与函数同级，用于中转保存被回复评论的ID号
+    var COMMENTID= 0;
+
+    function gotoReply(commentid) {
+        $("#submitBtn").hide();     // 隐藏发表评论按钮
+        $("#replyBtn").show();      // 显示回复评论按钮
+        $("#nickname").val("请在此回复编号为 " + commentid + " 的评论");
+        $("#comment").focus();      // 让文本域获取焦点
+        COMMENTID= commentid;  // 修改全局变量的值为当前被回复评论的iD
+    }
+
+    function replyComment(articleid) {
+        var content = $.trim($("#comment").val());
+        if (content.length < 5 || content.length > 1000) {
+            bootbox.alert({title: "错误提示", message: "评论内容在5-1000字之间."});
+            return false;
+        }
+        var param = 'articleid=' + articleid;
+        param += '&content=' + content;
+        param += '&commentid=' + COMMENTID;
+        $.post('/reply', param, function (data) {
+            if (data == 'content-invalid') {
+                bootbox.alert({title: "错误提示", message: "评论内容在5-1000字之间."});
+            }
+            else if (data == 'reply-limit') {
+                bootbox.alert({title:"错误提示", message:"当天已用完5条评论的限额."});
+            }
+            else if (data =='reply-pass') {
+                location.reload();
+            }
+            else if (data == 'reply-fail') {
+                bootbox.alert({title:"错误提示", message:"回复评论出错，请联系管理员."});
+            }
+        });
+    }
+
+    var PAGE = 1;   // 定义全局变量用于记录前面在哪一页，默认在第1页
+    var TOTAL = 1;  // 定义总页数，由模板引擎先引填充
+
+    // 添加gotoPage函数对应的代码
+    function gotoPage(articleid, type) {
+        // 如果当前面是第1页，则上一页还是第1页
+        if (type == 'prev') {
+            if (PAGE > 1)
+                PAGE -= 1;
+        }
+        // 如果当前页是是后一页，则下一页还是最后一页
+        else if (type == 'next') {
+            if (PAGE < TOTAL)
+                PAGE += 1;
+        }
+        else {
+            PAGE = parseInt(type);
+        }
+        fillComment(articleid, PAGE);
+    }
+
+    // 填充分页评论数据，注意其中的DOM元素的拼接操作
+    function fillComment(articleid, pageid) {
+        $("#commentDiv").empty();   // 先清空现有评论区内容
+        var content = '';           // 用于拼接评论区元素与内容
+        $.get('/comment/' + articleid + '-' + pageid, function (data) {
+        var comment = data;
+        for (var i in comment) {
+            content += '<div class="col-12 list row">';
+            content += '<div class="col-2 icon">';
+            content += '<img src="/avatar/' + comment[i]['avatar'] + '" class="img-fluid" style="width: 70px;"/>';
+            content += '</div>';
+            content += '<div class="col-10 comment">';
+            content += '<div class="col-12 row" style="padding: 0px;">';
+            content += '<div class="col-sm-6 col-12 commenter">';
+            content += comment[i]['nickname'];
+            content += '&nbsp;&nbsp;&nbsp;' + comment[i]['createtime'];
+            content += '</div>';
+            content += '<div class="col-sm-6 col-12 reply">';
+            <!-- 文章作者、管理员和评论者只能回复和隐藏，不能点赞-->
+            <!-- 此处的判断内容由模板引擎先行填充，字符串的比较在外面加 "" -->
+            if ("2" == "" ||
+                "" == "admin" ||
+                comment[i]['userid']+"" == "") {
+                content += '<label onclick="gotoReply(' + comment[i]['commentid'] + ')">';
+                content += '<span class="oi oi-arrow-circle-right" aria-hidden="true"></span>';
+                content += '回复</label>&nbsp;&nbsp;&nbsp;';
+                content += '<label onclick="hideComment(this, ' + comment[i]['commentid'] + ')">';
+                content += '<span class="oi oi-delete" aria-hidden="true"></span>隐藏</label>';
+            }
+            else {
+                <!-- 其他用户只能回复和点赞，不能隐藏 -->
+                content += '<label onclick="gotoReply(' + comment[i]['commentid'] + ')">';
+                content += '<span class="oi oi-arrow-circle-right" aria-hidden="true"></span>回复';
+                content += '</label>&nbsp;&nbsp;';
+                content += '<label onclick="agreeComment(this, ' + comment[i]['commentid'] + ')">';
+                content += '<span class="oi oi-chevron-bottom" aria-hidden="true"></span>赞成(<span>' + comment[i]['agreecount'] + '</span>)';
+                content += '</label>&nbsp;&nbsp;';
+                content += '<label onclick="opposeComment(this, ' + comment[i]['commentid'] + ')">';
+                content += '<span class="oi oi-x" aria-hidden="true"></span>反对(<span>' + comment[i]['opposecount'] + '</span>)';
+                content += '</label>';
+            }
+            content += '</div>';
+            content += '</div>';
+            content += '<div class="col-12 content">';
+            content += comment[i]['content'];     <!-- 填充原始评论内容 -->
+            content += '</div>';
+            content += '</div>';
+            content += '</div>';
+
+            <!-- 在当前评论下方填充回复评论,如果当前评论有回复才填充 -->
+            if (comment[i]['reply_list'].length > 0) {
+            var reply = comment[i]['reply_list'];
+            for (var j in reply) {
+                content += '<div class="col-12 list row">';
+                content += '<div class="col-2 icon">';
+                content += '<img src="/avatar/' + reply[j]['avatar'] + '" class="img-fluid" style="width: 45px;"/>';
+                content += '</div>';
+                content += '<div class="col-10 comment" style="border: solid 1px #ccc;">';
+                content += '<div class="col-12 row" style="color: #337AB7;">';
+                content += '<div class="col-sm-7 col-12 commenter" style="color: #337AB7;">';
+                content += reply[j]['nickname'];
+                content += ' 回复 ';
+                content += comment[i]['nickname'];
+                content += '&nbsp;&nbsp;&nbsp;';
+                content += reply[j]['createtime'];
+                content += '</div>';
+                content += '<div class="col-sm-5 col-12 reply">';
+                <!-- 回复的评论不能继续回复，但是可以隐藏和点赞 -->
+                if ("2" == "" ||
+                    "" == "admin" ||
+                    reply[j]['userid']+"" == "") {
+                    content += '<label onclick="hideComment(this, ' + reply[j]['commentid'] + ')">';
+                    content += '<span class="oi oi-delete" aria-hidden="true"></span>隐藏';
+                    content += '</label>&nbsp;&nbsp;';
+                }
+                content += '<label onclick="agreeComment(this, ' + reply[j]['commentid'] + ')">';
+                content += '<span class="oi oi-chevron-bottom" aria-hidden="true"></span>赞成(<span>' + reply[j]['agreecount'] + '</span>)';
+                content += '</label>&nbsp;&nbsp;';
+                content += '<label onclick="opposeComment(this, ' + reply[j]['commentid'] + ')">';
+                content += '<span class="oi oi-x" aria-hidden="true"></span>反对(<span>' + reply[j]['opposecount'] + '</span>)';
+                content += '</label>';
+                content += '</div>';
+                content += '</div>';
+                content += '<div class="col-12">';
+                content += '回复内容：' + reply[j]['content'];
+                content += '</div>';
+                content += '</div>';
+                content += '</div>';
+            }
+            }
+        }
+        $("#commentDiv").html(content);    // 填充到评论区域
+        });
+    }
+
+    function agreeComment(obj, commentid) {
+        param = "type=1&commentid=" + commentid;
+        $.post('/opinion', param, function (data) {
+            // 赞成成功后，将赞成数量+1并填充到页面中
+            if (data == 'opinion-pass') {
+                // 获取到当前元素下的第2个span标签元素
+                var element = $(obj).children('span').eq(1);
+                // 获取到赞成数量，并将其转换为整数
+                var count = parseInt(element.text());
+                element.text(count+1);
+            }
+        })
+    }
+
+    function opposeComment(obj, commentid) {
+        param = "type=0&commentid=" + commentid;
+        $.post('/opinion', param, function (data) {
+            // 反对成功后，将反对数量-1并填充到页面中
+            if (data == 'opinion-pass') {
+                // 获取到当前元素下的第2个span标签元素
+                var element = $(obj).children('span').eq(1);
+                // 获取到赞成数量，并将其转换为整数
+                var count = parseInt(element.text());
+                element.text(count+1);
+            }
+        })
+    }
+
+    // 隐藏评论请求
+    function hideComment(obj, commentid) {
+        bootbox.confirm("你确定要隐藏这条评论吗？", function(result) {
+            if (result) {
+                $.ajax({
+                    url: '/comment/' + commentid,
+                    type: 'delete',    // 发送delete请求
+                    success: function (data) {
+                        if (data == 'hide-pass') {
+                            // 通过父类选择器找到当前评论的顶层元素，并隐藏该元素
+                            $(obj).parent().parent().parent().parent().hide();
+                        } else if (data == 'hide-limit') {
+                            bootbox.alert({title: "错误提示",
+                                message: "带回复的评论无法隐藏."});
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+</script>
+
+<!-- 侧栏文章推荐 -->
+<div class="col-sm-3 col-12" style="padding: 0px 10px;">
+    <div class="col-12 search-bar form-group row">
+        <div class="col-8">
+            <input type="text" class="form-control" id="keyword" placeholder="请输入关键字" onkeyup="doSearch(event)"/>
+        </div>
+        <div class="col-4" style="text-align:right;">
+            <button type="button" class="btn btn-primary" onclick="doSearch(null)">搜索</button>
+        </div>
+    </div>
+
+    <!-- 利用前端JS进行渲染 -->
+    <div class="col-12 side">
+        <div class="tip">最新文章</div>
+        <ul id="last"></ul>
+    </div>
+
+    <div class="col-12 side">
+        <div class="tip">最多阅读</div>
+        <ul id="most"></ul>
+    </div>
+
+    <div class="col-12 side" id="fixedmenu">
+        <div class="tip">特别推荐</div>
+        <ul id="recommended"></ul>
+        <div class="tip" style="background-color: #3276b1; text-align: center; cursor: pointer;" onclick="gotoTop()">回到顶部</div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    function doSearch(e) {
+        // 如果参数e有值，但是对应的键盘码不是13（13表示回车），则不做响应
+        if (e != null && e.keyCode != 13) {
+            return false;
+        }
+        // 利用jQuery的ID选择器取搜索框的值，为去除前后空格
+        var keyword = $.trim($("#keyword").val());
+        // 如果关键字为空，或长度大于10，或包含%，则表示无效，代码结束运行
+        if (keyword.length == 0 || keyword.length > 10 || keyword.indexOf("%") >= 0) {
+            bootbox.alert({title:'错误提示', message:'你输入的关键字不合法.'});
+            $("#keyword").focus();     // 让文本框获取到焦点，方便用户输入
+            return false;
+        }
+        // 如果keyword满足条件，则直接将页面跳转至/search/1-<keyword>地址
+        location.href = '/search/1-' + keyword;
+    }
+
+    // 页面加载完成后即运行，用于前端动态填充侧边栏数据
+    $(document).ready(function(){
+        $.get('/recommend', function(data){
+            // 分别取得JSON数据中的三个类别的数据
+            var lastData = data[0];
+            var mostData = data[1];
+            var recommendedData = data[2];
+
+            for (var i in lastData) {
+                var articleid = lastData[i]['articleid'];
+                var headline = truncate(lastData[i]['headline'], 14);
+                var id = parseInt(i) + 1;
+                // 通过元素的append方法为其添加内容，为<ul>添加<li>列表项
+                $("#last").append('<li><a href="/article/' + articleid + '">' + id + '.&nbsp;&nbsp;' + headline + '</a></li>');
+            }
+
+            for (var i in mostData) {
+                var articleid = mostData[i]['articleid'];
+                var headline = truncate(mostData[i]['headline'], 14);
+                var id = parseInt(i) + 1;
+                // 通过元素的append方法为其添加内容，为<ul>添加<li>列表项
+                $("#most").append('<li><a href="/article/' + articleid + '">' + id + '.&nbsp;&nbsp;' + headline + '</a></li>');
+            }
+
+            for (var i in recommendedData) {
+                var articleid = recommendedData[i]['articleid'];
+                var headline = truncate(recommendedData[i]['headline'], 14);
+                var id = parseInt(i) + 1;
+                // 通过元素的append方法为其添加内容，为<ul>添加<li>列表项
+                $("#recommended").append('<li><a href="/article/' + articleid + '">' + id + '.&nbsp;&nbsp;' + headline + '</a></li>');
+            }
+        });
+    });
+
+    $(document).ready(function(){
+        // 利用浏览器的user-agent属性判断浏览器类型
+        var userAgentInfo = navigator.userAgent.toLowerCase();
+        var agents = ["android", "iphone", "symbianOS", "windows phone", "ipad", "ipod"];
+        var flag = true;    // 表示是PC端
+        for (var v = 0; v < agents.length; v++) {
+            if (userAgentInfo.indexOf(agents[v]) >= 0) {
+                flag = false;   // 表示这是移动端
+                break;
+            }
+        }
+
+        // 是PC端时才进行右侧停靠
+        if (flag == true) {
+            var fixedDiv = document.getElementById("fixedmenu");
+            var H = 0;
+            var Y = fixedDiv;
+            while (Y) {
+                H += Y.offsetTop;
+                Y = Y.offsetParent;
+            }
+
+            window.onscroll = function () {
+                var s = document.body.scrollTop || document.documentElement.scrollTop;
+                if (s > H + 500) {
+                    fixedDiv.style = "position:fixed; top:0; margin-top:0; width: 306px;";
+                } else {
+                    fixedDiv.style = "";
+                }
+            }
+        }
+    });
+
+    function gotoTop() {
+        $('html, body').animate({scrollTop: 0}, 800);
+        return false;
+    }
+</script>
+
+
+    </div>
+</div>
+
+<!-- 底部设计 -->
+<div class="container-fluid footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-4 left">
+                <p>版权所有 &copy; 蜗牛笔记 (V-1.0)</p>
+                <p>备案号：<a href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备15014130号-1</a></p>
+            </div>
+            <div class="col-4 center">
+                <p>友情链接</p>
+                <p><a href="http://www.woniuxy.com/" target="_blank">在线课堂</a>&nbsp;&nbsp;&nbsp;
+                    <a href="http://www.woniuxy.com/live" target="_blank">直播课堂</a>&nbsp;&nbsp;&nbsp;
+                    <a href="http://www.woniuxy.com/train/index.html" target="_blank">培训中心</a>&nbsp;&nbsp;&nbsp;
+                    <a href="http://www.aduobi.com" target="_blank">UI设计学院</a>
+                </p>
+            </div>
+            <div class="col-4 right">
+                <p>联系我们</p>
+                <p>成都★孵化园&nbsp;&nbsp;&nbsp;QQ/微信：15903523</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 登录和注册模态框 -->
+<!-- data-backdrop="static" 表示用户必须要手工关闭模态框才能操作其他页面 -->
+<div class="modal fade" id="mymodal" data-backdrop="static" tabindex="-1"
+     role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- 在模态框内部配置Tab选项卡，用于切换登录和注册窗口 -->
+            <div class="tabbable" id="tabs"
+                 style="background-color: #337AB7; height: 50px;padding: 5px 20px;">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <!-- 与登录和注册窗口的ID进行关联 -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li id="login" class="nav-item active">
+                        <a href="#loginpanel" data-toggle="tab" class="nav-link" style="color: midnightblue">登录</a>
+                    </li>
+                    <li id="reg" class="nav-item">
+                        <a href="#regpanel" data-toggle="tab" class="nav-link" style="color: midnightblue">注册</a>
+                    </li>
+                    <li id="find" class="nav-item">
+                        <a href="#findpanel" data-toggle="tab" class="nav-link" style="color: midnightblue">找回密码</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 绘制登录窗口 -->
+            <div class="tab-content">
+                <div class="tab-pane container active" id="loginpanel">
+                    <div class="modal-content" style="margin: 20px 0px;">
+                        <div class="modal-body">
+                            <div class="form-group row" style="margin-top: 20px;">
+                                <label for="loginname" class="col-4">&nbsp;&nbsp;登录邮箱：</label>
+                                <input type="text" id="loginname" class="form-control col-7" placeholder="请输入你的邮箱地址"/>
+                            </div>
+                            <div class="form-group row">
+                                <label for="loginpass" class="col-4">&nbsp;&nbsp;登录密码：</label>
+                                <input type="password" id="loginpass" class="form-control col-7" placeholder="请输入你的登录密码"/>
+                            </div>
+                            <div class="form-group row">
+                                <label for="logincode" class="col-4"> &nbsp;&nbsp;图片验证码：</label>
+                                <input type="text" id="logincode" class="form-control col-5" placeholder="请输入右侧的验证码" onkeyup="doLogin(event)"/>
+                                <img src="/captcha.html" id="loginvcode" class="col-3" style="cursor:pointer;" onclick="this.src='/captcha.html?'+Math.random()"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-dark" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" onclick="doLogin(null)">登录</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 绘制注册窗口 -->
+                <div class="tab-pane container" id="regpanel">
+                    <div class="modal-content">
+                        <div class="modal-content" style="margin: 20px 0px;">
+                            <div class="modal-body">
+                                <div class="form-group row" style="margin-top: 20px;">
+                                    <label for="regname" class="col-4">&nbsp;&nbsp;注册邮箱：</label>
+                                    <input type="text" id="regname" class="form-control col-7" placeholder="请输入你的邮箱地址"/>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="regpass" class="col-4">&nbsp;&nbsp;注册密码：</label>
+                                    <input type="password" id="regpass" class="form-control col-7" placeholder="请输入你的注册密码"/>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="regcode" class="col-4">&nbsp;&nbsp;邮箱验证码：</label>
+                                    <input type="text" id="regcode" class="form-control col-4" placeholder="请输入邮箱验证码" onkeyup="doReg(event)"/>
+                                    <button type="button" class="btn btn-primary col-3" onclick="doSendMail(this)">发送邮件</button>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <span>注册时请使用邮箱地址，便于找回密码。&nbsp;&nbsp;</span>
+                                <button type="button" class="btn btn-dark" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary" onclick="doReg(null)">注册</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 绘制找回密码窗口 -->
+                <div class="tab-pane container" id="findpanel">
+                    <div class="modal-content">
+                        <div class="modal-content" style="margin: 20px 0px;">
+                            <div class="modal-body">
+                                <div class="form-group row" style="margin-top: 20px;">
+                                    <label for="username" class="col-4">&nbsp;&nbsp;注册邮箱：</label>
+                                    <input type="text" id="username" class="form-control col-7" placeholder="请输入你的邮箱地址"/>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="newpass" class="col-4">&nbsp;&nbsp;新的密码：</label>
+                                    <input type="text" id="newpass" class="form-control col-7" placeholder="请输入新的登录密码"/>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="findcode" class="col-4">&nbsp;&nbsp;邮箱验证码：</label>
+                                    <input type="text" id="findcode" class="form-control col-4" placeholder="请输入邮箱验证码" onkeyup="doReset(event)"/>
+                                    <button type="button" class="btn btn-primary col-3" onclick="doSendMail(this)">发送邮件</button>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <span>请输入注册邮箱地址并重置密码。&nbsp;&nbsp;</span>
+                                <button type="button" class="btn btn-dark" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary" onclick="doReset(null)">重置密码</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

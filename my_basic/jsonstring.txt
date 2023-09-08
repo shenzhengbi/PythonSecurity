@@ -1,0 +1,1 @@
+[{"creditid": 1, "userid": 5, "category": "\u6dfb\u52a0\u8bc4\u8bba"}, {"creditid": 2, "userid": 5, "category": "\u6b63\u5e38\u767b\u5f55"}]
