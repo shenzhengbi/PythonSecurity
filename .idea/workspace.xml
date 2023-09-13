@@ -2,18 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e3f658f8-1381-45d4-b8e9-ded60553458c" name="Changes" comment="wu">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my_basic/network.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my_basic/osdemo.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my_network/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my_network/client.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my_network/feiq.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my_network/httpx.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my_network/server.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my_network/spider_bs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my_network/spider_re.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my_network/thread.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my_network/woniunote/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_crypto/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_crypto/kaiser.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_network/encode.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_network/mailx.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_network/redis_ssh.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_network/woniusaels_ui.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_security/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -58,8 +53,8 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="advanced.settings" />
   </component>
-  <component name="RunManager" selected="Python.thread">
-    <configuration name="feiq" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.kaiser">
+    <configuration name="encode" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PythonSecurity" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -72,7 +67,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/my_network/feiq.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/my_network/encode.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -81,7 +76,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="httpx" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="kaiser" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PythonSecurity" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -89,12 +84,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/my_network" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/my_crypto" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="D:\program\Python\stduy\PythonSecurity\my_network\httpx.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/my_crypto/kaiser.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -103,7 +98,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="spider_bs" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="mailx" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PythonSecurity" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -116,7 +111,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="D:\program\Python\stduy\PythonSecurity\my_network\spider_bs.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/my_network/mailx.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -125,7 +120,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="spider_re" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="redis_ssh" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PythonSecurity" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -138,7 +133,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/my_network/spider_re.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/my_network/redis_ssh.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -147,7 +142,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="thread" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="woniusaels_ui" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PythonSecurity" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -160,7 +155,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/my_network/thread.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/my_network/woniusaels_ui.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -171,11 +166,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.thread" />
-        <item itemvalue="Python.spider_bs" />
-        <item itemvalue="Python.spider_re" />
-        <item itemvalue="Python.httpx" />
-        <item itemvalue="Python.feiq" />
+        <item itemvalue="Python.kaiser" />
+        <item itemvalue="Python.redis_ssh" />
+        <item itemvalue="Python.mailx" />
+        <item itemvalue="Python.encode" />
+        <item itemvalue="Python.woniusaels_ui" />
       </list>
     </recent_temporary>
   </component>
@@ -195,6 +190,8 @@
       <workItem from="1694044414245" duration="10732000" />
       <workItem from="1694064062493" duration="42000" />
       <workItem from="1694132506921" duration="1739000" />
+      <workItem from="1694391572154" duration="9764000" />
+      <workItem from="1694476650846" duration="9205000" />
     </task>
     <task id="LOCAL-00001" summary="wu">
       <created>1693556839726</created>
@@ -240,15 +237,20 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PythonSecurity$server.coverage" NAME="server Coverage Results" MODIFIED="1693889124644" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_network" />
-    <SUITE FILE_PATH="coverage/PythonSecurity$http.coverage" NAME="httpx Coverage Results" MODIFIED="1693968835084" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_network" />
-    <SUITE FILE_PATH="coverage/PythonSecurity$osdemo.coverage" NAME="osdemo Coverage Results" MODIFIED="1693883168290" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_basic" />
+    <SUITE FILE_PATH="coverage/PythonSecurity$woniusaels_ui.coverage" NAME="woniusaels_ui Coverage Results" MODIFIED="1694396515681" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_network" />
     <SUITE FILE_PATH="coverage/PythonSecurity$misc.coverage" NAME="misc Coverage Results" MODIFIED="1693877412187" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_basic" />
-    <SUITE FILE_PATH="coverage/PythonSecurity$client.coverage" NAME="client Coverage Results" MODIFIED="1693893402790" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_network" />
-    <SUITE FILE_PATH="coverage/PythonSecurity$thread.coverage" NAME="thread Coverage Results" MODIFIED="1694056632703" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_network" />
-    <SUITE FILE_PATH="coverage/PythonSecurity$feiq.coverage" NAME="feiq Coverage Results" MODIFIED="1693962829764" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_network" />
+    <SUITE FILE_PATH="coverage/PythonSecurity$kaiser.coverage" NAME="kaiser Coverage Results" MODIFIED="1694489048869" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_crypto" />
     <SUITE FILE_PATH="coverage/PythonSecurity$spider_re.coverage" NAME="spider_re Coverage Results" MODIFIED="1694049492198" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_network" />
     <SUITE FILE_PATH="coverage/PythonSecurity$version_02.coverage" NAME="version_02 Coverage Results" MODIFIED="1693557012741" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/exercise" />
     <SUITE FILE_PATH="coverage/PythonSecurity$mysqlio.coverage" NAME="mysqlio Coverage Results" MODIFIED="1693791117176" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_basic" />
+    <SUITE FILE_PATH="coverage/PythonSecurity$redis_ssh.coverage" NAME="redis_ssh Coverage Results" MODIFIED="1694487012982" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_network" />
+    <SUITE FILE_PATH="coverage/PythonSecurity$http.coverage" NAME="httpx Coverage Results" MODIFIED="1693968835084" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_network" />
+    <SUITE FILE_PATH="coverage/PythonSecurity$mailx.coverage" NAME="mailx Coverage Results" MODIFIED="1694402856979" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_network" />
+    <SUITE FILE_PATH="coverage/PythonSecurity$osdemo.coverage" NAME="osdemo Coverage Results" MODIFIED="1693883168290" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_basic" />
+    <SUITE FILE_PATH="coverage/PythonSecurity$encode.coverage" NAME="encode Coverage Results" MODIFIED="1694402244216" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_network" />
+    <SUITE FILE_PATH="coverage/PythonSecurity$client.coverage" NAME="client Coverage Results" MODIFIED="1693893402790" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_network" />
+    <SUITE FILE_PATH="coverage/PythonSecurity$thread.coverage" NAME="thread Coverage Results" MODIFIED="1694056632703" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_network" />
+    <SUITE FILE_PATH="coverage/PythonSecurity$feiq.coverage" NAME="feiq Coverage Results" MODIFIED="1693962829764" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_network" />
     <SUITE FILE_PATH="coverage/PythonSecurity$spdier_bs.coverage" NAME="spider_bs Coverage Results" MODIFIED="1694053775290" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_network" />
     <SUITE FILE_PATH="coverage/PythonSecurity$network.coverage" NAME="network Coverage Results" MODIFIED="1693879724210" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/my_basic" />
   </component>
