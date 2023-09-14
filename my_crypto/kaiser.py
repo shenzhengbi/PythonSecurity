@@ -1,22 +1,33 @@
 #测试凯撒密码
-def kaiser():
-    source  = '蜗牛学院'
+def encode_kaiser(source,flag):
+#加密右移
     target = ''
     for i in source:
         ascii = ord(i)
-        ascii+=1
+        ascii+=flag
+        if (ascii not in range(65,91)) and (ascii not in range(97,123)):
+            if ascii>122:
+                ascii = 97 + (ascii - 123)
+            else:
+                ascii = 65 + (ascii - 91)
         ascii = chr(ascii)
         target += ascii
 
-    print(target)
+    return target
 
+def decode_kaiser(source,flag):
     unravel = ''
-    for i in target:
+    for i in source:
         ascii = ord(i)
-        ascii-=1
+        ascii-=flag
+        if (ascii not in range(65,91)) and (ascii not in range(97,123)):
+            if ascii<65:
+                ascii = 91 - (65 -ascii)
+            else:
+                ascii = 123 - (97 - ascii)
         unravel+=chr(ascii)
 
-    print(unravel)
+    return unravel
 
 #栅栏密码加密和解密过程
 def encrypt(string):
