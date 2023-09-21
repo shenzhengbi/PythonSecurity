@@ -5,6 +5,7 @@ test1
 test2
 weblogic
 ftp
+0908
 manager
 manage
 user
@@ -17,6 +18,8 @@ master
 imap
 memcached
 mongodb
+Admin123
+admin123
 oracle
 pop3
 postgresql
@@ -225,6 +228,7 @@ yangjie
 wangshuai
 wangxue
 yangjun
+0908
 zhangxu
 liugang
 wanghua
@@ -265,6 +269,7 @@ wangfengying
 zhangyuying
 lihongmei
 liujia
+admin
 liulei
 liupeng
 wangxu
@@ -281,6 +286,7 @@ wangliang
 lilei
 lijianhua
 wangyu
+lm
 chenling
 zhangjianhua
 liu
@@ -317,6 +323,7 @@ wangjianguo
 chenhua
 yanghua
 wangjianjun
+lm
 yangliu
 wangshuzhen
 yangfang
